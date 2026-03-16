@@ -16,4 +16,9 @@ public class Controler {
     public String contacts() {
         return "pages/contacts";
     }
+
+    @GetMapping("/catalog")
+    public String catalog() {
+        return "pages/catalog";
+    }
 }

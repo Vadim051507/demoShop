@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог | Florist Boutique</title>
+
+     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <!-- <link rel="stylesheet" href="../../static/css/style.css"> -->
+</head>
+
+<script src="../../static/js/script.js"></script>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo">FLORIST</div>
+        <ul class="nav-links">
+            <li><a href="/index">Головна</a></li>
+            <li><a href="/catalog" class="active">Каталог</a></li>
+            <li><a href="#">Доставка</a></li>
+            <li><a href="/contacts">Контакти</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+    <section class="catalog">
+
+        <h2>Каталог букетів</h2>
+
+        <div class="catalog-filter">
+
+            <button class="filter-btn active" data-filter="all">Всі</button>
+            <button class="filter-btn" data-filter="roses">Троянди</button>
+            <button class="filter-btn" data-filter="tulips">Тюльпани</button>
+            <button class="filter-btn" data-filter="bouquets">Букети</button>
+
+        </div>
+
+
+        <div class="product-grid">
+
+
+            <div class="product-card" data-category="roses">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600" alt="Троянди">
+                </div>
+                <h3>Букет троянд</h3>
+                <p>1100 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+
+
+            <div class="product-card" data-category="tulips">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600" alt="Троянди">
+                </div>
+                <h3>Весняні тюльпани</h3>
+                <p>750 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card" data-category="roses">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600" alt="Троянди">
+                </div>
+                <h3>Сонячний букет</h3>
+                <p>820 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card" data-category="bouquets">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600" alt="Троянди">
+                </div>
+                <h3>Польові квіти</h3>
+                <p>640 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card" data-category="roses">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Троянди">
+                </div>
+                <h3>Святковий мікс</h3>
+                <p>1300 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card" data-category="bouquets">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600" alt="Троянди">
+                </div>
+                <h3>Екзотичний букет</h3>
+                <p>1450 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card" data-category="bouquets">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946" alt="Троянди">
+                </div>
+                <h3>Романтичний букет</h3>
+                <p>980 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=600" alt="Троянди">
+                </div>
+                <h3>Червоні троянди</h3>
+                <p>1200 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7" alt="Троянди">
+                </div>
+                <h3>Ніжні тюльпани</h3>
+                <p>700 грн</p>
+                <button class="buy-btn">В кошик</button>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 Florist Boutique. Всі права захищені.</p>
+</footer>
+
+</body>
+</html>
