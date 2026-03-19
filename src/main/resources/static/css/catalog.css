@@ -1,0 +1,31 @@
+
+/* ════════════════════════════════
+   CATALOG PAGE
+════════════════════════════════ */
+
+.catalog-hero {
+  padding: 80px 6% 60px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.catalog-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 400;
+}
+
+.filter-bar {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  padding: 0 6%; margin: 32px 0;
+}
+
+.filter-pill {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); padding: 8px 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: .68rem; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all .25s;
+}
+.filter-pill:hover { border-color: var(--muted2); color: var(--white); }
+.filter-pill.active { background: var(--gold); border-color: var(--gold); color: var(--bg); }
+
+.catalog-grid-wrap { padding: 0 6% 100px; }

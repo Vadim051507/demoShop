@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(
+        ~{:: title},
+        ~{:: #page-css},
+        ~{:: #page-content},
+        ~{:: #page-js}
+      )}">
+<head>
+    <title>Доставка | Florist Boutique</title>
+    <th:block id="page-css">
+        <link rel="stylesheet" th:href="@{/css/delivery.css}">
+    </th:block>
+</head>
+<body>
+
+<th:block id="page-content">
+
+    <div class="delivery-banner">
+        <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=1400" alt="">
+        <div class="delivery-banner-content">
+            <p class="section-tag">Швидко · Надійно · Вчасно</p>
+            <h1>Доставка квітів<br>по Києву</h1>
+            <p>Щодня з 08:00 до 22:00 — включаючи вихідні та свята</p>
+        </div>
+    </div>
+
+    <div class="delivery-options">
+        <div class="delivery-option">
+            <span class="d-icon">⚡</span>
+            <div class="d-title">Експрес</div>
+            <div class="d-desc">Доставка протягом 1–2 годин. Для тих, хто не може чекати — термінові подарунки, сюрпризи.</div>
+            <div class="d-price">від 150 грн</div>
+        </div>
+        <div class="delivery-option">
+            <span class="d-icon">🕐</span>
+            <div class="d-title">Стандартна</div>
+            <div class="d-desc">Обираєте зручний 2-годинний інтервал на сьогодні або будь-який день наперед.</div>
+            <div class="d-price">від 80 грн</div>
+        </div>
+        <div class="delivery-option">
+            <span class="d-icon">📅</span>
+            <div class="d-title">Запланована</div>
+            <div class="d-desc">Точна дата й час — ідеально для днів народження, ювілеїв, свят.</div>
+            <div class="d-price">від 80 грн</div>
+        </div>
+        <div class="delivery-option">
+            <span class="d-icon">🏪</span>
+            <div class="d-title">Самовивіз</div>
+            <div class="d-desc">Заберіть готовий букет у нашому магазині — вул. Квіткова, 12.</div>
+            <div class="d-price">Безкоштовно</div>
+        </div>
+    </div>
+
+    <div class="zones-section">
+        <h2 class="zone-title">Зони та вартість доставки</h2>
+        <table class="zone-table">
+            <thead>
+            <tr>
+                <th>Зона</th>
+                <th>Райони</th>
+                <th>Стандарт</th>
+                <th>Експрес</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><strong>1</strong></td>
+                <td>Центр, Печерськ, Шевченківський</td>
+                <td>80 грн</td>
+                <td>150 грн</td>
+            </tr>
+            <tr>
+                <td><strong>2</strong></td>
+                <td>Голосіїв, Солом'янка, Подол</td>
+                <td>100 грн</td>
+                <td>180 грн</td>
+            </tr>
+            <tr>
+                <td><strong>3</strong></td>
+                <td>Оболонь, Дарниця, Деснянський</td>
+                <td>120 грн</td>
+                <td>200 грн</td>
+            </tr>
+            <tr>
+                <td><strong>4</strong></td>
+                <td>Лівий берег, Бортничі, приміська зона</td>
+                <td>160 грн</td>
+                <td>250 грн</td>
+            </tr>
+            <tr>
+                <td colspan="2"><span style="color:var(--gold)">✦</span> Замовлення від 2 000 грн</td>
+                <td colspan="2" class="free">Безкоштовна доставка (зони 1–2)</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="faq-section">
+        <h2>Часті запитання</h2>
+        <div class="faq-item">
+            <div class="faq-q">Як відстежити статус доставки? <span class="faq-icon">+</span></div>
+            <div class="faq-a">Після підтвердження замовлення ви отримаєте SMS із посиланням на трекінг. Також можна зателефонувати нам у будь-який час.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Чи можна замовити анонімну доставку? <span class="faq-icon">+</span></div>
+            <div class="faq-a">Так! При оформленні є опція «Анонімна доставка» — курʼєр не розкриє відправника.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Що якщо одержувача не буде вдома? <span class="faq-icon">+</span></div>
+            <div class="faq-a">Курʼєр зателефонує перед приїздом. Якщо одержувач недоступний — погодимо новий час безкоштовно.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Чи доставляєте у вихідні та свята? <span class="faq-icon">+</span></div>
+            <div class="faq-a">Так, щодня з 08:00 до 22:00 — включаючи вихідні та державні свята.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Як упаковані квіти під час доставки? <span class="faq-icon">+</span></div>
+            <div class="faq-a">Букети доставляємо у флористичних коробках або загорнутими у водонепроникний папір із вологим тримачем для стебел.</div>
+        </div>
+    </div>
+
+    <div class="delivery-cta">
+        <div class="cta-text">
+            <h3>Готові зробити замовлення?</h3>
+            <p>Ми доставимо ваші емоції — швидко, бережно, вчасно</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="/catalog" class="btn-primary">Обрати букет</a>
+            <a href="/contacts" class="btn-ghost">Зв'язатись</a>
+        </div>
+    </div>
+
+</th:block>
+
+<th:block id="page-js">
+    <script th:src="@{/js/delivery.js}"></script>
+</th:block>
+
+</body>
+</html>

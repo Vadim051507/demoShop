@@ -1,61 +1,87 @@
+
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(
+        ~{:: title},
+        ~{:: #page-css},
+        ~{:: #page-content},
+        ~{:: #page-js}
+      )}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Florist Boutique | Магазин квітів</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+    <th:block id="page-css">
+        <link rel="stylesheet" th:href="@{/css/home.css}">
+    </th:block>
 </head>
 <body>
 
-<header>
-  <nav class="navbar">
-      <div class="logo">FLORIST</div>
-      <ul class="nav-links">
-          <li><a href="/index" class="active">Головна</a></li>
-          <li><a href="/catalog">Каталог</a></li>
-          <li><a href="/delivery">Доставка</a></li>
-          <li><a href="/contacts">Контакти</a></li>
-      </ul>
-  </nav>
-</header>
+<th:block id="page-content">
 
-<section class="hero">
-  <div class="hero-content">
-      <h1>Краса у кожній пелюстці</h1>
-      <p>Створюємо букети, що говорять за вас.</p>
-      <button class="btn">Обрати букет</button>
-  </div>
-</section>
+    <section class="hero">
+        <div class="hero-image-col">
+            <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1400" alt="Квіти">
+        </div>
+        <div class="hero-content-col">
+            <div class="hero-badge">Колекція весна 2026</div>
+            <h1>Краса у<br><em>кожній</em><br>пелюстці</h1>
+            <p class="hero-sub">Авторські букети ручної роботи. Доставка по Києву того ж дня.</p>
+            <div class="hero-actions">
+                <a href="/catalog" class="btn-primary">Переглянути каталог</a>
+                <a href="/delivery" class="btn-ghost">Умови доставки</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <span class="stat-num">500+</span>
+                    <span class="stat-label">Задоволених клієнтів</span>
+                </div>
+                <div>
+                    <span class="stat-num">3 год</span>
+                    <span class="stat-label">Середній час доставки</span>
+                </div>
+                <div>
+                    <span class="stat-num">100%</span>
+                    <span class="stat-label">Свіжі квіти</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="products">
-  <h2>Наші бестселери</h2>
-  <div class="product-grid">
-      <div class="product-card">
-          <div class="product-img" style="background-color: #fce4ec;">🌸</div>
-          <h3>Ніжна Роза</h3>
-          <p>950 грн</p>
-          <button class="buy-btn">В кошик</button>
-      </div>
-      <div class="product-card">
-          <div class="product-img" style="background-color: #f3e5f5;">🌿</div>
-          <h3>Весняний Мікс</h3>
-          <p>1200 грн</p>
-          <button class="buy-btn">В кошик</button>
-      </div>
-      <div class="product-card">
-          <div class="product-img" style="background-color: #e8f5e9;">🌻</div>
-          <h3>Сонячний Настрій</h3>
-          <p>800 грн</p>
-          <button class="buy-btn">В кошик</button>
-      </div>
-  </div>
-</section>
+    <div class="marquee-wrap">
+        <div class="marquee-track">
+            <span class="marquee-item">Свіжі троянди</span>
+            <span class="marquee-item">Авторські букети</span>
+            <span class="marquee-item">Доставка по Києву</span>
+            <span class="marquee-item">Ексклюзивна флористика</span>
+            <span class="marquee-item">Тюльпани</span>
+            <span class="marquee-item">Польові квіти</span>
+            <span class="marquee-item">Подарункове пакування</span>
+            <!-- duplicate for seamless loop -->
+            <span class="marquee-item">Свіжі троянди</span>
+            <span class="marquee-item">Авторські букети</span>
+            <span class="marquee-item">Доставка по Києву</span>
+            <span class="marquee-item">Ексклюзивна флористика</span>
+            <span class="marquee-item">Тюльпани</span>
+            <span class="marquee-item">Польові квіти</span>
+            <span class="marquee-item">Подарункове пакування</span>
+        </div>
+    </div>
 
-<footer>
-  <p>&copy; 2026 Florist Boutique. Всі права захищені.</p>
-</footer>
+    <section class="home-section">
+        <div class="section-header">
+            <div>
+                <p class="section-tag">Обрані флористами</p>
+                <h2 class="section-title">Бестселери</h2>
+            </div>
+            <a class="section-link" href="/catalog">Весь каталог →</a>
+        </div>
+        <div class="products-grid" id="home-products"></div>
+    </section>
+
+</th:block>
+
+<th:block id="page-js">
+    <script th:src="@{/js/home.js}"></script>
+</th:block>
 
 </body>
 </html>

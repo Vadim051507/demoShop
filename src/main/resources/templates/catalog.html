@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(
+        ~{:: title},
+        ~{:: #page-css},
+        ~{:: #page-content},
+        ~{:: #page-js}
+      )}">
+<head>
+    <title>Каталог | Florist Boutique</title>
+    <th:block id="page-css">
+        <link rel="stylesheet" th:href="@{/css/catalog.css}">
+    </th:block>
+</head>
+<body>
+
+<th:block id="page-content">
+
+    <div class="catalog-hero">
+        <div>
+            <p class="section-tag">Florist Boutique · 2026</p>
+            <h1>Каталог</h1>
+        </div>
+        <p style="color:var(--muted);font-size:.85rem;max-width:300px;">
+            Усі букети виготовляються вручну після оформлення замовлення
+        </p>
+    </div>
+
+    <div class="filter-bar">
+        <button class="filter-pill active" data-cat="all">Всі</button>
+        <button class="filter-pill" data-cat="roses">Троянди</button>
+        <button class="filter-pill" data-cat="tulips">Тюльпани</button>
+        <button class="filter-pill" data-cat="bouquets">Букети</button>
+        <button class="filter-pill" data-cat="exotic">Екзотика</button>
+    </div>
+
+    <div class="catalog-grid-wrap">
+        <div class="catalog-grid" id="catalog-products"></div>
+    </div>
+
+</th:block>
+
+<th:block id="page-js">
+    <script th:src="@{/js/catalog.js}"></script>
+</th:block>
+
+</body>
+</html>>

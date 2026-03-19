@@ -21,4 +21,9 @@ public class Controler {
     public String catalog() {
         return "pages/catalog";
     }
+
+    @GetMapping("/delivery")
+    public String delivery() {
+        return "pages/delivery";
+    }
 }
