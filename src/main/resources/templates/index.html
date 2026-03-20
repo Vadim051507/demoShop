@@ -1,12 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(
-        ~{:: title},
-        ~{:: #page-css},
-        ~{:: #page-content},
-        ~{:: #page-js}
-      )}">
+  ~{:: title},
+  ~{:: #page-content},
+  ~{:: #page-js}
+)}">
 <head>
     <title>Florist Boutique | Магазин квітів</title>
     <th:block id="page-css">
@@ -69,7 +67,7 @@
     <section class="home-section">
         <div class="section-header">
             <div>
-                <p class="section-tag">Обрані флористами</p>
+                   <p class="section-tag">Обрані флористами</p>
                 <h2 class="section-title">Бестселери</h2>
             </div>
             <a class="section-link" href="/catalog">Весь каталог →</a>

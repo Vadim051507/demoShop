@@ -1,24 +1,22 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org"
-      th:fragment="layout(title, pageCSS, content, pageJS)">
+      th:fragment="layout(title, content, pageJS)">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:replace="${title}">Florist Boutique</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
 
-    <!-- Shared styles -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
-    <!-- Page-specific styles -->
-    <th:block th:replace="${pageCSS}"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/catalog.css}">
+    <link rel="stylesheet" th:href="@{/css/delivery.css}">
+    <link rel="stylesheet" th:href="@{/css/contacts.css}">
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav>
     <a class="nav-logo" th:href="@{/}">FLOR<span>✦</span>IST</a>
     <ul class="nav-links">
@@ -33,12 +31,10 @@
     </button>
 </nav>
 
-<!-- ── PAGE CONTENT ── -->
 <main>
     <th:block th:replace="${content}"/>
 </main>
 
-<!-- ── FOOTER ── -->
 <footer class="footer">
     <div class="footer-logo">FLOR<span>✦</span>IST</div>
     <p class="footer-copy">© 2026 Florist Boutique. Всі права захищені.</p>
@@ -49,7 +45,6 @@
     </ul>
 </footer>
 
-<!-- ── CART DRAWER ── -->
 <div class="cart-overlay" id="cart-overlay"></div>
 <div class="cart-drawer" id="cart-drawer">
     <div class="cart-header">
@@ -71,12 +66,9 @@
     </div>
 </div>
 
-<!-- Shared JS (order matters) -->
 <script th:src="@{/js/products.js}"></script>
 <script th:src="@{/js/cart.js}"></script>
-
-<!-- Page-specific JS -->
-<th:block th:replace="${pageJS}"/>
+<th:block th:replace="${pageJS}" th:if="${pageJS != null}"/>
 
 </body>
 </html>

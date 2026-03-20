@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(
-        ~{:: title},
-        ~{:: #page-css},
-        ~{:: #page-content},
-        ~{:: #page-js}
-      )}">
+  ~{:: title},
+  ~{:: #page-content},
+  ~{:: #page-js}
+)}">
 <head>
   <title>Контакти | Florist Boutique</title>
   <th:block id="page-css">
@@ -62,24 +61,27 @@
       <div class="contact-form-wrap">
         <h2>Напишіть нам</h2>
         <p class="form-sub">Відповідаємо протягом 1 години у робочий час</p>
-        <form id="contact-form">
+        <form th:action="@{/contacts}" method="post">
+          <!-- Захист від CSRF — Spring Security додає автоматично,
+               але якщо без Security — можна поки прибрати -->
+
           <div class="form-row">
             <div class="form-field">
               <label>Ім'я</label>
-              <input type="text" placeholder="Ваше ім'я" required>
+              <input type="text" name="name" placeholder="Ваше ім'я" required>
             </div>
             <div class="form-field">
               <label>Телефон</label>
-              <input type="tel" placeholder="+380">
+              <input type="tel" name="phone" placeholder="+380">
             </div>
           </div>
           <div class="form-field">
             <label>Email</label>
-            <input type="email" placeholder="email@example.com" required>
+            <input type="email" name="email" placeholder="email@example.com" required>
           </div>
           <div class="form-field">
             <label>Тема</label>
-            <select>
+            <select name="subject">
               <option>Замовлення букету</option>
               <option>Питання по доставці</option>
               <option>Корпоративне замовлення</option>
@@ -88,11 +90,20 @@
           </div>
           <div class="form-field">
             <label>Повідомлення</label>
-            <textarea rows="5" placeholder="Розкажіть, як ми можемо допомогти..." required></textarea>
+            <textarea name="message" rows="5" required></textarea>
           </div>
-          <button type="submit" class="btn-primary" style="width:100%;">Надіслати повідомлення</button>
-          <div class="form-success" id="form-success">
-            ✓ Повідомлення надіслано! Ми зв'яжемося з вами незабаром.
+
+          <button type="submit" class="btn-primary" style="width:100%;">
+            Надіслати повідомлення
+          </button>
+
+          <!-- Показуємо результат з бекенду -->
+          <div class="form-success" th:if="${successMessage}" style="display:block;">
+            ✓ [[${successMessage}]]
+          </div>
+          <div class="form-success" th:if="${errorMessage}"
+               style="display:block; background:rgba(192,57,43,.1); border-color:rgba(192,57,43,.3); color:#c0392b;">
+            ✗ [[${errorMessage}]]
           </div>
         </form>
       </div>
