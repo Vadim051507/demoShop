@@ -44,7 +44,7 @@ public class ContactService {
                """,
                request.getName(),
                request.getEmail(),
-               request.getPhone() != null ? request.getPhone() : "not specified",
+               request.getPhone(),
                request.getSubject(),
                request.getMessage());
    }

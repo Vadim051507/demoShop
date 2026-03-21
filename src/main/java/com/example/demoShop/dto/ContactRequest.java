@@ -4,7 +4,7 @@ public class ContactRequest {
 
     private String name;
     private String email;
-    private String phone;
+    private String phone = "";
     private String subject;
     private String message;
 
@@ -19,7 +19,7 @@ public class ContactRequest {
         return phone;
     }
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.phone = phone != null ? phone : "";
     }
 
     public String getEmail() {

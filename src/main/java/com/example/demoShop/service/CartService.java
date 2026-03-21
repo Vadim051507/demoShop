@@ -12,4 +12,40 @@ import java.util.Optional;
 @SessionScope
 public class CartService {
     private final List<CartItem> items = new ArrayList<>();
+
+    public void addItem(CartItem newItem) {
+        Optional<CartItem> existing = items.stream()
+                .filter(i -> i.getProductId().equals(newItem.getProductId()))
+                .findFirst();
+
+        if (existing.isPresent()) {
+            existing.get().setQuantity(existing.get().getQuantity() + 1);
+        } else {
+            items.add(newItem);
+        }
+    }
+
+    public void removeItem(Long productId) {
+        items.removeIf(i -> i.getProductId().equals(productId));
+    }
+
+    public void clear() {
+        items.clear();
+    }
+
+    public List<CartItem> getItems() {
+        return items;
+    }
+
+    public int getTotal() {
+        return items.stream()
+                .mapToInt(i -> i.getPrice() * i.getQuantity())
+                .sum();
+    }
+
+    public int getCount() {
+        return items.stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+    }
 }

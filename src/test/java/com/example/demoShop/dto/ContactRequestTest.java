@@ -28,25 +28,34 @@ public class ContactRequestTest {
 
         assertNull(request.getName());
         assertNull(request.getEmail());
-        assertNull(request.getPhone());
+        assertNotNull(request.getPhone());
         assertNull(request.getSubject());
         assertNull(request.getMessage());
     }
 
     @Test
     void shouldAllowNullPhone() {
-        ContactRequest request = new ContactRequest();
 
+        ContactRequest request = new ContactRequest();
         request.setName("Вадим");
         request.setEmail("wadimlikar@gmail.com");
         request.setPhone(null);
         request.setSubject("Other");
         request.setMessage("Question");
 
-        assertNull(request.getPhone());
-        assertNull(request.getName());
-        assertNull(request.getEmail());
+        assertNotNull(request.getPhone());
+        assertTrue(request.getPhone().isEmpty());
+        assertNotNull(request.getName());
+        assertNotNull(request.getEmail());
     }
 
+    @Test
+    void shouldOverwriteFieldsOnSet() {
+        ContactRequest request = new ContactRequest();
+        request.setName("Вадим");
+        request.setName("Олег");
+
+        assertEquals("Олег", request.getName());
+    }
 
 }
