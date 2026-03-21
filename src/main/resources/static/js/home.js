@@ -1,23 +1,15 @@
-
-// ─── Home page ───
 document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('home-products');
-  if (!grid) return;
+    const grid = document.getElementById('home-products');
+    if (!grid) return;
 
-  // Render first 6 products
-  grid.innerHTML = PRODUCTS.slice(0, 6).map(renderCard).join('');
+    grid.innerHTML = PRODUCTS.slice(0, 6).map(renderCard).join('');
 
-  // Add to cart buttons
-  grid.querySelectorAll('.add-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = Number(btn.dataset.id);
-      addToCart(id);
-      btn.textContent = '✓';
-      btn.classList.add('added');
-      setTimeout(() => {
-        btn.textContent = '+';
-        btn.classList.remove('added');
-      }, 1800);
+    grid.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = Number(btn.dataset.id);
+            const product = PRODUCTS.find(p => p.id === id);
+            if (!product) return;
+            handleAddBtn(btn, product.id, product.name, product.price, product.img);
+        });
     });
-  });
 });
