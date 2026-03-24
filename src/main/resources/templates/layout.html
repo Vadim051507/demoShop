@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:replace="${title}">Florist Boutique</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/catalog.css}">
@@ -19,12 +17,21 @@
 
 <nav>
     <a class="nav-logo" th:href="@{/}">FLOR<span>✦</span>IST</a>
-    <ul class="nav-links">
+
+    <!-- Hamburger — видимий тільки на мобільному -->
+    <button class="burger" id="burger" aria-label="Меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <ul class="nav-links" id="nav-links">
         <li><a th:href="@{/}"        th:classappend="${activePage == 'home'}     ? 'active'">Головна</a></li>
         <li><a th:href="@{/catalog}" th:classappend="${activePage == 'catalog'}  ? 'active'">Каталог</a></li>
         <li><a th:href="@{/delivery}"th:classappend="${activePage == 'delivery'} ? 'active'">Доставка</a></li>
         <li><a th:href="@{/contacts}"th:classappend="${activePage == 'contacts'} ? 'active'">Контакти</a></li>
     </ul>
+
     <button class="nav-cart" onclick="toggleCart()">
         🛒 Кошик
         <span class="cart-count" id="cart-count">0</span>
@@ -68,6 +75,28 @@
 
 <script th:src="@{/js/products.js}"></script>
 <script th:src="@{/js/cart.js}"></script>
+
+<!-- Hamburger JS -->
+<script>
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('nav-links');
+
+    burger.addEventListener('click', () => {
+        burger.classList.toggle('open');
+        navLinks.classList.toggle('open');
+        document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+    });
+
+    // Закриваємо меню при кліку на посилання
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            burger.classList.remove('open');
+            navLinks.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+    });
+</script>
+
 <th:block th:replace="${pageJS}" th:if="${pageJS != null}"/>
 
 </body>

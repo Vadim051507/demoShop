@@ -734,3 +734,203 @@ nav {
     .checkout-left { border-right: none; border-bottom: 1px solid var(--border); padding: 36px 24px; }
     .checkout-right { padding: 36px 24px; }
 }
+
+/* ════════════════════════════════
+   HAMBURGER MENU
+════════════════════════════════ */
+
+.burger {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  width: 36px; height: 36px;
+  background: transparent; border: none; cursor: pointer; padding: 4px;
+}
+.burger span {
+  display: block; height: 1.5px; width: 100%;
+  background: var(--white); transition: all .3s ease;
+  transform-origin: center;
+}
+.burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ════════════════════════════════
+   RESPONSIVE — TABLET 900px
+════════════════════════════════ */
+@media (max-width: 900px) {
+
+  /* Cart drawer full width */
+  .cart-drawer { width: 100vw; right: -100vw; }
+
+  /* Hero */
+  .hero { flex-direction: column; }
+  .hero-image-col { flex: none; height: 45vw; min-height: 220px; }
+  .hero-image-col::after {
+    background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%);
+  }
+  .hero-content-col { padding: 28px 6% 50px; }
+  .hero-stats { gap: 20px; }
+  .stat-num { font-size: 1.4rem; }
+
+  /* Home section */
+  .home-section { padding: 60px 5%; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+  /* Catalog */
+  .catalog-hero { flex-direction: column; gap: 12px; padding: 60px 5% 40px; }
+  .catalog-grid-wrap { padding: 0 5% 60px; }
+
+  /* Delivery */
+  .delivery-cta { flex-direction: column; padding: 36px 24px; }
+  .zones-section { padding: 50px 5% 0; }
+  .faq-section { padding: 50px 5% 0; max-width: 100%; }
+
+  /* Contacts */
+  .contacts-layout { grid-template-columns: 1fr; gap: 32px; }
+  .contacts-page { padding: 60px 5% 60px; }
+
+  /* Footer */
+  .footer { flex-direction: column; text-align: center; gap: 16px; padding: 40px 5%; }
+  .footer-links { justify-content: center; flex-wrap: wrap; gap: 16px; }
+}
+
+/* ════════════════════════════════
+   RESPONSIVE — MOBILE 640px
+════════════════════════════════ */
+@media (max-width: 640px) {
+
+  body { padding-top: 64px; }
+
+  /* ── NAV MOBILE ── */
+  nav {
+    height: 64px;
+    padding: 0 5%;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .nav-logo { font-size: 1.2rem; }
+
+  /* Показуємо burger, ховаємо посилання */
+  .burger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: rgba(13,13,13,0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+    padding: 8px 0;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block;
+    padding: 16px 6%;
+    font-size: .78rem;
+    letter-spacing: 2px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+  .nav-links a::after { display: none; }
+
+  /* Зменшуємо кнопку кошика */
+  .nav-cart {
+    padding: 7px 14px;
+    font-size: .65rem;
+    letter-spacing: 1.5px;
+  }
+
+  /* ── HERO MOBILE ── */
+  .hero { height: auto; min-height: calc(100vh - 64px); }
+  .hero-image-col { height: 52vw; min-height: 200px; }
+  .hero-content-col { padding: 24px 5% 44px; }
+
+  .hero h1 { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 16px; }
+  .hero-sub { font-size: .82rem; margin-bottom: 28px; max-width: 100%; }
+  .hero-badge { font-size: .58rem; padding: 5px 12px; margin-bottom: 20px; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .btn-primary, .btn-ghost { width: 100%; text-align: center; padding: 14px; }
+
+  .hero-stats { gap: 16px; margin-top: 36px; padding-top: 28px; flex-wrap: wrap; }
+  .stat-num { font-size: 1.3rem; }
+  .stat-label { font-size: .6rem; }
+
+  /* ── GRIDS ── */
+  .products-grid,
+  .catalog-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+  }
+
+  .product-img { height: 140px; }
+  .product-body { padding: 14px 14px 16px; }
+  .product-name { font-size: 1rem; margin-bottom: 10px; }
+  .product-price { font-size: .88rem; }
+  .add-btn { width: 28px; height: 28px; font-size: .9rem; }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap { padding: 12px 0; }
+  .marquee-item { font-size: .58rem; gap: 12px; }
+
+  /* ── SECTIONS ── */
+  .home-section { padding: 44px 5%; }
+  .section-title { font-size: 1.6rem; }
+
+  /* ── CATALOG ── */
+  .catalog-hero { padding: 44px 5% 28px; }
+  .catalog-hero h1 { font-size: 2rem; }
+  .filter-bar { padding: 0 5%; gap: 6px; margin: 20px 0; }
+  .filter-pill { padding: 7px 14px; font-size: .6rem; letter-spacing: 1.5px; }
+  .catalog-grid-wrap { padding: 0 5% 44px; }
+
+  /* ── DELIVERY ── */
+  .delivery-banner { height: 50vw; min-height: 200px; }
+  .delivery-banner h1 { font-size: 1.6rem; }
+  .delivery-options {
+    padding: 40px 5% 0;
+    grid-template-columns: 1fr;
+  }
+  .delivery-option { padding: 28px 24px; }
+  .zones-section { padding: 40px 5% 0; }
+  .zone-title { font-size: 1.4rem; }
+  .zone-table { font-size: .78rem; }
+  .zone-table th, .zone-table td { padding: 10px 12px; }
+  .faq-section { padding: 40px 5% 0; }
+  .faq-section h2 { font-size: 1.4rem; }
+  .delivery-cta { margin: 40px 5% 0; padding: 28px 24px; }
+
+  /* ── CONTACTS ── */
+  .contacts-page { padding: 44px 5% 44px; }
+  .contacts-page .page-head h1 { font-size: 1.8rem; }
+  .contact-form-wrap { padding: 28px 20px; }
+  .form-row { grid-template-columns: 1fr; }
+
+  /* ── CART DRAWER ── */
+  .cart-header { padding: 20px 20px 16px; }
+  .cart-items { padding: 16px 20px; }
+  .cart-footer { padding: 16px 20px; }
+
+  /* ── CHECKOUT MODAL ── */
+  .checkout-box { max-height: 100vh; }
+  .checkout-left { padding: 28px 20px; }
+  .checkout-right { padding: 28px 20px; }
+  .co-title { font-size: 1.3rem; margin-bottom: 20px; }
+
+  /* ── FOOTER ── */
+  .footer { padding: 32px 5%; }
+  .footer-links { gap: 12px; }
+}
+
+/* ════════════════════════════════
+   RESPONSIVE — SMALL 380px
+════════════════════════════════ */
+@media (max-width: 380px) {
+  .products-grid,
+  .catalog-grid { grid-template-columns: 1fr; }
+  .product-img { height: 200px; }
+}
