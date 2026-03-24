@@ -564,6 +564,8 @@ nav {
     position: fixed; inset: 0; z-index: 2000;
     align-items: center; justify-content: center;
     padding: 20px;
+    /* Важливо для iOS Safari */
+    -webkit-overflow-scrolling: touch;
 }
 .checkout-modal.open { display: flex; }
 
@@ -584,9 +586,12 @@ nav {
     border: 1px solid rgba(201,168,76,.2);
     width: 100%; max-width: 900px;
     max-height: 90vh; overflow-y: auto;
+    overflow-x: hidden;
     display: flex; flex-direction: column;
     animation: slideUp .4s cubic-bezier(.25,.46,.45,.94);
     box-shadow: 0 40px 80px rgba(0,0,0,.5);
+    /* iOS scroll fix */
+    -webkit-overflow-scrolling: touch;
 }
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(40px); }
@@ -733,6 +738,76 @@ nav {
     #checkout-form-wrap { flex-direction: column; }
     .checkout-left { border-right: none; border-bottom: 1px solid var(--border); padding: 36px 24px; }
     .checkout-right { padding: 36px 24px; }
+}
+
+/* ════════════════════════════════
+   MOBILE NAVBAR FIX
+════════════════════════════════ */
+
+/* Фікс для iOS — position:fixed і transform конфліктують */
+nav {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+}
+
+/* Фікс viewport на реальних пристроях */
+@media screen and (max-width: 640px) {
+
+    /* Модалка — повний екран на мобільному */
+    .checkout-modal { padding: 0; align-items: flex-end; }
+    .checkout-box {
+        max-height: 95vh;
+        max-width: 100%;
+        border-left: none; border-right: none; border-bottom: none;
+        border-radius: 0;
+        animation: slideUpMobile .35s cubic-bezier(.25,.46,.45,.94);
+    }
+    @keyframes slideUpMobile {
+        from { transform: translateY(100%); }
+        to   { transform: translateY(0); }
+    }
+
+    #checkout-form-wrap { flex-direction: column; min-height: auto; }
+    .checkout-left {
+        padding: 24px 20px 20px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+    .checkout-right { padding: 20px 20px 32px; }
+    .co-title { font-size: 1.25rem; margin-bottom: 16px; }
+    .co-total-val { font-size: 1.4rem; }
+    .co-field { margin-bottom: 14px; }
+    .co-field input,
+    .co-field textarea,
+    .co-field select { padding: 13px 12px; font-size: .95rem; }
+    .co-submit { padding: 17px; font-size: .78rem; }
+
+    /* Кнопка закриття модалки — більша зона кліку */
+    .checkout-close {
+        top: 16px; right: 16px;
+        width: 40px; height: 40px; font-size: 1.1rem;
+    }
+
+    /* Зони доставки — горизонтальний скрол */
+    .zone-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .zone-table { min-width: 480px; }
+
+    /* Кнопка "Переглянути каталог" — не з'їжджає під стрічку */
+    .hero-actions { position: relative; z-index: 1; }
+    .btn-primary, .btn-ghost {
+        display: block;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    /* Кошик — більші зони дотику */
+    .add-btn { width: 36px; height: 36px; font-size: 1rem; }
+    .cart-item-remove { padding: 8px 12px; font-size: .9rem; }
 }
 
 /* ════════════════════════════════

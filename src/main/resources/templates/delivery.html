@@ -1,16 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(
-  ~{:: title},
-  ~{:: #page-content},
-  ~{:: #page-js}
-)}">
+        ~{:: title},
+        ~{:: #page-content},
+        ~{:: #page-js}
+      )}">
 <head>
     <title>Доставка | Florist Boutique</title>
-    <th:block id="page-css">
-        <link rel="stylesheet" th:href="@{/css/delivery.css}">
-    </th:block>
 </head>
 <body>
 
@@ -54,46 +50,48 @@
 
     <div class="zones-section">
         <h2 class="zone-title">Зони та вартість доставки</h2>
-        <table class="zone-table">
-            <thead>
-            <tr>
-                <th>Зона</th>
-                <th>Райони</th>
-                <th>Стандарт</th>
-                <th>Експрес</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><strong>1</strong></td>
-                <td>Центр, Печерськ, Шевченківський</td>
-                <td>80 грн</td>
-                <td>150 грн</td>
-            </tr>
-            <tr>
-                <td><strong>2</strong></td>
-                <td>Голосіїв, Солом'янка, Подол</td>
-                <td>100 грн</td>
-                <td>180 грн</td>
-            </tr>
-            <tr>
-                <td><strong>3</strong></td>
-                <td>Оболонь, Дарниця, Деснянський</td>
-                <td>120 грн</td>
-                <td>200 грн</td>
-            </tr>
-            <tr>
-                <td><strong>4</strong></td>
-                <td>Лівий берег, Бортничі, приміська зона</td>
-                <td>160 грн</td>
-                <td>250 грн</td>
-            </tr>
-            <tr>
-                <td colspan="2"><span style="color:var(--gold)">✦</span> Замовлення від 2 000 грн</td>
-                <td colspan="2" class="free">Безкоштовна доставка (зони 1–2)</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="zone-table-wrap">
+            <table class="zone-table">
+                <thead>
+                <tr>
+                    <th>Зона</th>
+                    <th>Райони</th>
+                    <th>Стандарт</th>
+                    <th>Експрес</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>1</strong></td>
+                    <td>Центр, Печерськ, Шевченківський</td>
+                    <td>80 грн</td>
+                    <td>150 грн</td>
+                </tr>
+                <tr>
+                    <td><strong>2</strong></td>
+                    <td>Голосіїв, Солом'янка, Подол</td>
+                    <td>100 грн</td>
+                    <td>180 грн</td>
+                </tr>
+                <tr>
+                    <td><strong>3</strong></td>
+                    <td>Оболонь, Дарниця, Деснянський</td>
+                    <td>120 грн</td>
+                    <td>200 грн</td>
+                </tr>
+                <tr>
+                    <td><strong>4</strong></td>
+                    <td>Лівий берег, Бортничі, приміська зона</td>
+                    <td>160 грн</td>
+                    <td>250 грн</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><span style="color:var(--gold)">✦</span> Замовлення від 2 000 грн</td>
+                    <td colspan="2" class="free">Безкоштовна доставка (зони 1–2)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="faq-section">
