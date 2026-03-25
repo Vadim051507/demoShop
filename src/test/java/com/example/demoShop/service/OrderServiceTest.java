@@ -11,15 +11,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
 import java.util.List;
-
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
@@ -29,12 +26,12 @@ class OrderServiceTest {
 
     private OrderService orderService;
 
-    @BeforeEach
-    void setUp() {
-        orderService = new OrderService(mailSender);
-        org.springframework.test.util.ReflectionTestUtils
-                .setField(orderService, "mailTo", "test@gmail.com");
-    }
+//    @BeforeEach
+//    void setUp() {
+//        orderService = new OrderService(mailSender);
+//        org.springframework.test.util.ReflectionTestUtils
+//                .setField(orderService, "mailTo", "test@gmail.com");
+//    }
 
     @Test
     void shouldSendEmailWhenOrderPlaced() {

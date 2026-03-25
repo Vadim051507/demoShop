@@ -2,6 +2,9 @@ package com.example.demoShop.service;
 
 import com.example.demoShop.dto.CartItem;
 import com.example.demoShop.dto.OrderRequest;
+import com.example.demoShop.entity.Order;
+import com.example.demoShop.entity.OrderItem;
+import com.example.demoShop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,19 +13,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderService {
     private final JavaMailSender mailSender;
+    private final OrderRepository orderRepository;
 
     @Value("${app.mail.to}")
     private String mailTo;
 
-    public OrderService(JavaMailSender mailSender) {
+    public OrderService(JavaMailSender mailSender,  OrderRepository orderRepository) {
         this.mailSender = mailSender;
+        this.orderRepository = orderRepository;
     }
 
-    public void processOrder(OrderRequest order) {
+    public void processOrder(OrderRequest request) {
+        Order order = new Order();
+        order.setName(request.getName());
+        order.setPhone(request.getPhone());
+        order.setAddress(request.getAddress());
+        order.setDeliveryType(request.getDeliveryType());
+        order.setComment(request.getComment());
+        order.setTotal(request.getTotal());
+
+        for (CartItem cartItem : request.getItems()) {
+            OrderItem item = new OrderItem();
+            item.setProductId(cartItem.getProductId());
+            item.setName(cartItem.getName());
+            item.setPrice(cartItem.getPrice());
+            item.setImg(cartItem.getImg());
+            item.setQuantity(cartItem.getQuantity());
+            item.setOrder(order);
+            order.getItems().add(item);
+        }
+
+        orderRepository.save(order);
+
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(mailTo);
-        message.setSubject("New order from " + order.getName());
-        message.setText(buildOrderText(order));
+        message.setFrom(mailTo);
+        message.setSubject("New order from " +  order.getName());
+        message.setText(buildOrderText(request));
         mailSender.send(message);
     }
 
