@@ -32,7 +32,23 @@ public class OrderService {
         sb.append("=========================\n\n");
         sb.append("Name:  ").append(order.getName()).append("\n");
         sb.append("Phone:  ").append(order.getPhone()).append("\n");
-        return null;
+        sb.append("Address:  ").append(order.getAddress()).append("\n");
+        sb.append("Delivery type:  ").append(order.getDeliveryType()).append("\n");
+
+        if (order.getComment() != null && !order.getComment().isEmpty()){
+            sb.append("Comment:  ").append(order.getComment()).append("\n");
+        }
+
+        sb.append("\nGoods:\n");
+        for (CartItem item : order.getItems()) {
+            sb.append("  • ").append(item.getName())
+                    .append(" × ").append(item.getQuantity())
+                    .append(" = ").append(item.getPrice() * item.getQuantity())
+                    .append(" грн\n");
+        }
+
+        sb.append("\nTo by paid: ").append(order.getTotal()).append(" uan\n");
+        return sb.toString();
     }
-        //TODO: Продовжити написання функціоналу
+
 }

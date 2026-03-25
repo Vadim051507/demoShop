@@ -132,17 +132,34 @@ async function submitOrder(e) {
     e.preventDefault();
     const btn = document.getElementById('checkout-submit');
     btn.disabled = true;
-    btn.textContent = 'Обробка...';
+    btn.textContent = 'Відправляємо...';
 
-    // Симулюємо відправку (тут потім підключиш реальний POST /api/orders)
-    await new Promise(r => setTimeout(r, 1200));
+    // Збираємо дані форми
+    const inputs = document.querySelectorAll('#checkout-form input, #checkout-form select, #checkout-form textarea');
+    const [name, phone, address, deliveryType, comment] = [...inputs].map(i => i.value);
 
-    // Очищаємо кошик
-    await clearCart();
+    try {
+        const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, address, deliveryType, comment })
+        });
 
-    // Показуємо success стан
-    document.getElementById('checkout-form-wrap').style.display = 'none';
-    document.getElementById('checkout-success').style.display = 'flex';
+        const data = await res.json();
+
+        if (data.success) {
+            await loadCart(); // оновлює badge після очищення
+            document.getElementById('checkout-form-wrap').style.display = 'none';
+            document.getElementById('checkout-success').style.display = 'flex';
+        } else {
+            btn.disabled = false;
+            btn.textContent = 'Оформити замовлення';
+            alert('Помилка. Спробуйте ще раз.');
+        }
+    } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Оформити замовлення';
+    }
 }
 
 // ─── Init ────────────────────────────────────────────────────
