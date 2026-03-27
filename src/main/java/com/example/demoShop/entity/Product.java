@@ -13,39 +13,46 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
+    private String description;
+
+    @Column(nullable = false)
+    private int price;
+
+    private String imageUrl;
+
     @Column(nullable = false)
     private String category;
-
-    @Column(nullable = false)
-    private Integer price;
-
-    @Column(name = "image_url")
-    private String imageUrl;
 
     private String badge;
 
     @Column(nullable = false)
-    private Boolean available = true;
+    private int stock = 0;       // кількість в наявності
 
-    // Getters and setters
+    private boolean available = true;
+
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public Integer getPrice() { return price; }
-    public void setPrice(Integer price) { this.price = price; }
+    public int getPrice() { return price; }
+    public void setPrice(int price) { this.price = price; }
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+
     public String getBadge() { return badge; }
     public void setBadge(String badge) { this.badge = badge; }
 
-    public Boolean getAvailable() { return available; }
-    public void setAvailable(Boolean available) { this.available = available; }
+    public int getStock() { return stock; }
+    public void setStock(int stock) { this.stock = stock; }
+
+    public boolean isAvailable() { return available; }
+    public void setAvailable(boolean available) { this.available = available; }
 }

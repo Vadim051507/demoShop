@@ -5,25 +5,30 @@ import com.example.demoShop.dto.OrderRequest;
 import com.example.demoShop.entity.Order;
 import com.example.demoShop.entity.OrderItem;
 import com.example.demoShop.repository.OrderRepository;
+import com.example.demoShop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderService {
 
     private final JavaMailSender mailSender;
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     @Value("${app.mail.to}")
     private String mailTo;
 
-    public OrderService(JavaMailSender mailSender, OrderRepository orderRepository) {
+    public OrderService(JavaMailSender mailSender, OrderRepository orderRepository, ProductRepository productRepository) {
         this.mailSender = mailSender;
         this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
 
+    @Transactional
     public void processOrder(OrderRequest request) {
         // 1. Зберегти в БД
         Order order = new Order();
@@ -44,6 +49,17 @@ public class OrderService {
         }
 
         orderRepository.save(order);
+
+        for (CartItem cartItem : request.getItems()) {
+            if (cartItem.getProductId() != null) {
+                int updated = productRepository.decreaseStock(
+                        cartItem.getProductId(), cartItem.getQuantity()
+                );
+                if (updated == 0) {
+                    System.err.println("Not enough product: " + cartItem.getName());
+                }
+            }
+        }
 
         // 2. Відправити email — помилка не ламає замовлення
         try {
