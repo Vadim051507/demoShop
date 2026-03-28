@@ -69,7 +69,50 @@ public class UserServiceTest {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_USER")));
     }
 
-    //TODO: Дописати тести
+    @Test
+    void shouldRegisterNewUser() {
+        when(userRepository.existsByEmail("new@gmail.com")).thenReturn(false);
+        when(passwordEncoder.encode("password123")).thenReturn("hashed");
+        when(userRepository.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
+
+        User result = userService.register("Vadim", "new@gmail.com", "+380966008376", "password123");
+
+        assertEquals("Vadim", result.getName());
+        assertEquals("new@gmail.com", result.getEmail());
+        assertEquals("hashed", result.getPassword());
+        assertEquals(Role.USER, result.getRole());
+    }
+
+    @Test
+    void shouldThrowWhenEmailAlreadyExists() {
+        when(userRepository.existsByEmail("exists@gmail.com")).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> userService.register("Vadim", "exists@gmail.com", "+380966008376", "password123"));
+    }
+
+    @Test
+    void shouldEncodePasswordOnRegister() {
+        when(userRepository.existsByEmail(any())).thenReturn(false);
+        when(passwordEncoder.encode("rawPass")).thenReturn("encodedPass");
+        when(userRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        User result = userService.register("Vadim", "test@gmail.com", "+380966008376", "rawPass");
+
+        assertNotEquals("rawPass", result.getPassword());
+        assertEquals("encodedPass", result.getPassword());
+    }
+
+    @Test
+    void shouldSaveUserToRepository() {
+        when(userRepository.existsByEmail(any())).thenReturn(false);
+        when(passwordEncoder.encode(any())).thenReturn("hashed");
+        when(userRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        userService.register("Vadim", "test@gmail.com", "+380966008376", "pass");
+
+        verify(userRepository, times(1)).save(any(User.class));
+    }
 
     private User buildUser(String email, String name, Role role) {
         User user = new User();
