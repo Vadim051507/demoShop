@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="navbar" class="admin-nav">
+    <a href="/admin" class="admin-nav__brand">
+        <span class="admin-nav__logo">FLOR<span>✦</span>IST</span>
+        <span class="admin-nav__badge">Admin</span>
+    </a>
+
+    <ul class="admin-nav__links">
+        <li>
+            <a href="/admin" class="admin-nav__link"
+               th:classappend="${activePage == 'dashboard'} ? ' active'">
+                Дашборд
+            </a>
+        </li>
+        <li>
+            <a href="/admin/products" class="admin-nav__link"
+               th:classappend="${activePage == 'products'} ? ' active'">
+                Товари
+            </a>
+        </li>
+        <li>
+            <a href="/admin/orders" class="admin-nav__link"
+               th:classappend="${activePage == 'orders'} ? ' active'">
+                Замовлення
+            </a>
+        </li>
+    </ul>
+
+    <div class="admin-nav__actions">
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn-logout">Вийти</button>
+        </form>
+    </div>
+</nav>
+</body>
+</html>

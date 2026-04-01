@@ -2,46 +2,130 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Адмін-панель</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Дашборд — Admin</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark px-4">
-    <span class="navbar-brand">🌸 Адмін-панель</span>
-    <div>
-        <a href="/admin/products" class="btn btn-outline-light btn-sm me-2">Товари</a>
-        <a href="/admin/orders" class="btn btn-outline-light btn-sm me-2">Замовлення</a>
-        <a href="/logout" class="btn btn-danger btn-sm">Вийти</a>
+<div th:replace="~{admin/fragments/navbar :: navbar}"></div>
+
+<div class="admin-wrap">
+    <h1 class="admin-page-title">Дашборд</h1>
+
+    <div class="stat-grid">
+        <div class="stat-card fade-up">
+            <div class="stat-card__value" th:text="${totalProducts}">0</div>
+            <div class="stat-card__label">Товарів</div>
+        </div>
+        <div class="stat-card fade-up">
+            <div class="stat-card__value" th:text="${totalOrders}">0</div>
+            <div class="stat-card__label">Замовлень</div>
+        </div>
+        <div class="stat-card fade-up">
+            <div class="stat-card__value" style="color:#9ca3af" th:text="${pendingOrders}">0</div>
+            <div class="stat-card__label">Очікують</div>
+        </div>
+        <div class="stat-card fade-up">
+            <div class="stat-card__value" style="color:#4ade80" th:text="${doneOrders}">0</div>
+            <div class="stat-card__label">Виконано</div>
+        </div>
+        <div class="stat-card fade-up">
+            <div class="stat-card__value" style="color:#f87171" th:text="${cancelledOrders}">0</div>
+            <div class="stat-card__label">Скасовано</div>
+        </div>
+        <div class="stat-card stat-card--revenue fade-up">
+            <div class="stat-card__value" th:text="${totalRevenue} + ' ₴'">0 ₴</div>
+            <div class="stat-card__label">Виручка</div>
+        </div>
     </div>
-</nav>
-<div class="container mt-4">
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="card text-white bg-success p-3">
-                <h5>Товарів</h5>
-                <h2 th:text="${productCount}">0</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:20px">
+        <div class="admin-card">
+            <div class="admin-card__header">
+                <span class="admin-card__title">Статуси</span>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="statusChart"></canvas>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card text-white bg-primary p-3">
-                <h5>Замовлень</h5>
-                <h2 th:text="${orderCount}">0</h2>
+
+        <div class="admin-card">
+            <div class="admin-card__header">
+                <span class="admin-card__title">Останні замовлення</span>
+                <a href="/admin/orders" style="font-size:.75rem;color:var(--gold);text-decoration:none;letter-spacing:1px">Всі →</a>
             </div>
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Клієнт</th>
+                    <th>Сума</th>
+                    <th>Статус</th>
+                    <th>Дата</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="o : ${recentOrders}">
+                    <td class="td-id" th:text="${o.id}"></td>
+                    <td style="font-weight:500" th:text="${o.clientName}"></td>
+                    <td class="td-price" th:text="${o.total} + ' ₴'"></td>
+                    <td>
+                            <span th:text="${o.status}"
+                                  th:class="${o.status.name() == 'PENDING'    ? 'status-badge badge-pending' :
+                                              o.status.name() == 'CONFIRMED'  ? 'status-badge badge-confirmed' :
+                                              o.status.name() == 'DELIVERING' ? 'status-badge badge-delivering' :
+                                              o.status.name() == 'DONE'       ? 'status-badge badge-done' :
+                                                                                'status-badge badge-cancelled'}">
+                            </span>
+                    </td>
+                    <td class="td-muted"
+                        th:text="${#temporals.format(o.createdAt, 'dd.MM.yy HH:mm')}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <h5>Останні замовлення</h5>
-    <table class="table table-striped">
-        <thead><tr><th>#</th><th>Клієнт</th><th>Сума</th><th>Статус</th><th>Дата</th></tr></thead>
-        <tbody>
-        <tr th:each="o : ${recentOrders}">
-            <td th:text="${o.id}"></td>
-            <td th:text="${o.clientName}"></td>
-            <td th:text="${o.total} + ' ₴'"></td>
-            <td th:text="${o.status}"></td>
-            <td th:text="${#temporals.format(o.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
-        </tr>
-        </tbody>
-    </table>
 </div>
+
+<script th:inline="javascript">
+    const pending   = [[${pendingOrders}]];
+    const done      = [[${doneOrders}]];
+    const cancelled = [[${cancelledOrders}]];
+    const total     = [[${totalOrders}]];
+    const other     = Math.max(0, total - pending - done - cancelled);
+
+    Chart.defaults.color = '#666';
+    Chart.defaults.font.family = 'Montserrat';
+
+    new Chart(document.getElementById('statusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Очікують', 'Виконано', 'Скасовано', 'Інші'],
+            datasets: [{
+                data: [pending, done, cancelled, other],
+                backgroundColor: [
+                    'rgba(156,163,175,.5)',
+                    'rgba(74,222,128,.5)',
+                    'rgba(248,113,113,.5)',
+                    'rgba(245,197,24,.5)'
+                ],
+                borderColor: [
+                    '#9ca3af','#4ade80','#f87171','#f5c518'
+                ],
+                borderWidth: 1.5
+            }]
+        },
+        options: {
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 16, font: { size: 11 } }
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>

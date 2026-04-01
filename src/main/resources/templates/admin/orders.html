@@ -1,50 +1,101 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Замовлення</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Замовлення — Admin</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark px-4">
-  <a class="navbar-brand" href="/admin">🌸 Адмін</a>
-</nav>
-<div class="container mt-4">
-  <table class="table table-hover">
-    <thead>
-    <tr><th>#</th><th>Клієнт</th><th>Телефон</th><th>Сума</th><th>Статус</th><th>Дата</th><th>Змінити статус</th></tr>
-    </thead>
-    <tbody>
-    <tr th:each="o : ${orders}">
-      <td th:text="${o.id}"></td>
-      <td th:text="${o.clientName}"></td>
-      <td th:text="${o.phone}"></td>
-      <td th:text="${o.total} + ' ₴'"></td>
-      <td>
-                    <span th:text="${o.status}"
-                          th:class="${o.status.name() == 'PENDING'    ? 'badge bg-secondary' :
-                  o.status.name() == 'CONFIRMED'  ? 'badge bg-primary' :
-                  o.status.name() == 'DELIVERING' ? 'badge bg-warning text-dark' :
-                  o.status.name() == 'DONE'       ? 'badge bg-success' :
-                                                    'badge bg-danger'}">
-</span>
-      </td>
-      <td th:text="${#temporals.format(o.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
-      <td>
-        <form th:action="@{/admin/orders/{id}/status(id=${o.id})}" method="post" class="d-flex gap-1">
-          <select name="status" class="form-select form-select-sm" style="width:140px">
-            <option value="PENDING"    th:selected="${o.status.name() == 'PENDING'}">Нове</option>
-            <option value="CONFIRMED"  th:selected="${o.status.name() == 'CONFIRMED'}">Підтверджено</option>
-            <option value="DELIVERING" th:selected="${o.status.name() == 'DELIVERING'}">В доставці</option>
-            <option value="DONE"       th:selected="${o.status.name() == 'DONE'}">Виконано</option>
-            <option value="CANCELLED"  th:selected="${o.status.name() == 'CANCELLED'}">Скасовано</option>
-          </select>
-          <button class="btn btn-sm btn-primary">✓</button>
+<div th:replace="~{admin/fragments/navbar :: navbar}"></div>
+
+<div class="admin-wrap">
+    <h1 class="admin-page-title">Замовлення</h1>
+
+    <div class="filter-bar">
+        <form method="get" action="/admin/orders"
+              style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;width:100%">
+            <input type="text" name="search" class="filter-input"
+                   placeholder="🔍 Пошук по імені клієнта..."
+                   th:value="${search}">
+            <select name="status" class="filter-select">
+                <option value="">Всі статуси</option>
+                <option value="PENDING"    th:selected="${selectedStatus == 'PENDING'}">Нове</option>
+                <option value="CONFIRMED"  th:selected="${selectedStatus == 'CONFIRMED'}">Підтверджено</option>
+                <option value="DELIVERING" th:selected="${selectedStatus == 'DELIVERING'}">В доставці</option>
+                <option value="DONE"       th:selected="${selectedStatus == 'DONE'}">Виконано</option>
+                <option value="CANCELLED"  th:selected="${selectedStatus == 'CANCELLED'}">Скасовано</option>
+            </select>
+            <button type="submit" class="btn-filter">Фільтр</button>
+            <a href="/admin/orders" class="btn-reset">Скинути</a>
         </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    </div>
+
+    <div class="admin-card">
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Клієнт</th>
+                <th class="hide-mobile">Телефон</th>
+                <th>Сума</th>
+                <th>Статус</th>
+                <th class="hide-mobile">Дата</th>
+                <th>Змінити</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="o : ${orderPage.content}">
+                <td class="td-id" th:text="${o.id}"></td>
+                <td style="font-weight:500" th:text="${o.clientName}"></td>
+                <td class="td-muted hide-mobile" th:text="${o.phone}"></td>
+                <td class="td-price" th:text="${o.total} + ' ₴'"></td>
+                <td>
+                        <span th:text="${o.status}"
+                              th:class="${o.status.name() == 'PENDING'    ? 'status-badge badge-pending' :
+                                          o.status.name() == 'CONFIRMED'  ? 'status-badge badge-confirmed' :
+                                          o.status.name() == 'DELIVERING' ? 'status-badge badge-delivering' :
+                                          o.status.name() == 'DONE'       ? 'status-badge badge-done' :
+                                                                            'status-badge badge-cancelled'}">
+                        </span>
+                </td>
+                <td class="td-muted hide-mobile"
+                    th:text="${#temporals.format(o.createdAt, 'dd.MM.yy HH:mm')}"></td>
+                <td>
+                    <form th:action="@{/admin/orders/{id}/status(id=${o.id})}"
+                          method="post" style="display:flex;gap:6px">
+                        <select name="status" class="status-select">
+                            <option value="PENDING"    th:selected="${o.status.name() == 'PENDING'}">Нове</option>
+                            <option value="CONFIRMED"  th:selected="${o.status.name() == 'CONFIRMED'}">Підтверджено</option>
+                            <option value="DELIVERING" th:selected="${o.status.name() == 'DELIVERING'}">Доставка</option>
+                            <option value="DONE"       th:selected="${o.status.name() == 'DONE'}">Виконано</option>
+                            <option value="CANCELLED"  th:selected="${o.status.name() == 'CANCELLED'}">Скасовано</option>
+                        </select>
+                        <button type="submit" class="btn-confirm">✓</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <ul class="pagination" th:if="${orderPage.totalPages > 1}">
+        <li class="page-item" th:classappend="${orderPage.first} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/admin/orders(page=${orderPage.number - 1}, status=${selectedStatus}, search=${search})}">‹</a>
+        </li>
+        <li class="page-item"
+            th:each="i : ${#numbers.sequence(0, orderPage.totalPages - 1)}"
+            th:classappend="${i == orderPage.number} ? 'active'">
+            <a class="page-link"
+               th:href="@{/admin/orders(page=${i}, status=${selectedStatus}, search=${search})}"
+               th:text="${i + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${orderPage.last} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/admin/orders(page=${orderPage.number + 1}, status=${selectedStatus}, search=${search})}">›</a>
+        </li>
+    </ul>
 </div>
 </body>
 </html>
