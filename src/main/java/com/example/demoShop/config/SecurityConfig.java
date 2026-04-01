@@ -25,19 +25,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")  // вимикаємо CSRF для REST API
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/cabinet/**").hasRole("USER")
                         .requestMatchers(
                                 "/", "/catalog", "/delivery", "/contacts",
                                 "/api/**", "/css/**", "/js/**", "/images/**",
-                                "/register", "/login"
+                                "/register", "/login", "/cabinet/**"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/admin", true)
                         .failureUrl("/login?error")
                         .permitAll()
                 )

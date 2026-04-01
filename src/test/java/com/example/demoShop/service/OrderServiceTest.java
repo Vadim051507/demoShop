@@ -1,93 +1,78 @@
 package com.example.demoShop.service;
 
-
 import com.example.demoShop.dto.CartItem;
 import com.example.demoShop.dto.OrderRequest;
 import com.example.demoShop.repository.OrderRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.demoShop.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
 
-
     @Mock
     private OrderRepository orderRepository;
+
     @Mock
-    private JavaMailSender mailSender;
+    private EmailService emailService;
+
+    @Mock
+    private ProductRepository productRepository;
+
     @InjectMocks
     private OrderService orderService;
 
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void shouldSendEmailWhenOrderPlaced() {
+        when(productRepository.decreaseStock(anyLong(), anyInt())).thenReturn(1);
+
+        orderService.processOrder(buildTestOrder());
+
+        verify(emailService, times(1)).sendOrderEmail(any(OrderRequest.class));
+    }
+
+    @Test
+    void shouldSaveOrderToRepository() {
+        when(productRepository.decreaseStock(anyLong(), anyInt())).thenReturn(1);
+
+        orderService.processOrder(buildTestOrder());
+
+        verify(orderRepository, times(1)).save(any());
+    }
+
+    @Test
+    void shouldDecreaseStockForEachItem() {
+        when(productRepository.decreaseStock(anyLong(), anyInt())).thenReturn(1);
+
+        orderService.processOrder(buildTestOrder());
+
+        verify(productRepository, times(2)).decreaseStock(anyLong(), anyInt());
+    }
+
+    @Test
+    void shouldSendEmailWithCorrectOrder() {
+        when(productRepository.decreaseStock(anyLong(), anyInt())).thenReturn(1);
         OrderRequest order = buildTestOrder();
+
         orderService.processOrder(order);
-        verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
+
+        verify(emailService).sendOrderEmail(order);
     }
 
     @Test
-    void shouldSendToCorrectRecipient() {
-        ArgumentCaptor<SimpleMailMessage> captor = ArgumentCaptor.forClass(SimpleMailMessage.class);
+    void shouldNotThrowWhenStockDecreaseReturnsZero() {
+        when(productRepository.decreaseStock(anyLong(), anyInt())).thenReturn(0);
 
-        orderService.processOrder(buildTestOrder());
-
-        verify(mailSender).send(captor.capture());
-        SimpleMailMessage sent = captor.getValue();
-
-        assertArrayEquals(new String[]{"test@gmail.com"}, sent.getTo());
-    }
-
-    @Test
-    void shouldIncludeClientNameInSubject() {
-        ArgumentCaptor<SimpleMailMessage> captor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-
-        orderService.processOrder(buildTestOrder());
-
-        verify(mailSender).send(captor.capture());
-        assertTrue(captor.getValue().getSubject().contains("Vadim"));
-    }
-
-    @Test
-    void shouldIncludeAllItemsInEmailBody() {
-        ArgumentCaptor<SimpleMailMessage> captor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        orderService.processOrder(buildTestOrder());
-
-        verify(mailSender).send(captor.capture());
-        String body = captor.getValue().getText();
-
-        assertTrue(body.contains("Roses"));
-        assertTrue(body.contains("Tulips"));
-        assertTrue(body.contains("1850"));
-    }
-
-    @Test
-    void shouldNotSendEmailIfMailSenderThrows() {
-        doThrow(new RuntimeException("SMTP error"))
-                .when(mailSender).send(any(SimpleMailMessage.class));
-
-        assertThrows(RuntimeException.class,
-                () -> orderService.processOrder((buildTestOrder())));
+        assertDoesNotThrow(() -> orderService.processOrder(buildTestOrder()));
     }
 
     private OrderRequest buildTestOrder() {
@@ -104,5 +89,4 @@ class OrderServiceTest {
         order.setTotal(1850);
         return order;
     }
-
 }

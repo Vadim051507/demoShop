@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Замовлення</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark px-4">
+  <a class="navbar-brand" href="/admin">🌸 Адмін</a>
+</nav>
+<div class="container mt-4">
+  <table class="table table-hover">
+    <thead>
+    <tr><th>#</th><th>Клієнт</th><th>Телефон</th><th>Сума</th><th>Статус</th><th>Дата</th><th>Змінити статус</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="o : ${orders}">
+      <td th:text="${o.id}"></td>
+      <td th:text="${o.clientName}"></td>
+      <td th:text="${o.phone}"></td>
+      <td th:text="${o.total} + ' ₴'"></td>
+      <td>
+                    <span th:text="${o.status}"
+                          th:class="${o.status.name() == 'PENDING'    ? 'badge bg-secondary' :
+                  o.status.name() == 'CONFIRMED'  ? 'badge bg-primary' :
+                  o.status.name() == 'DELIVERING' ? 'badge bg-warning text-dark' :
+                  o.status.name() == 'DONE'       ? 'badge bg-success' :
+                                                    'badge bg-danger'}">
+</span>
+      </td>
+      <td th:text="${#temporals.format(o.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+      <td>
+        <form th:action="@{/admin/orders/{id}/status(id=${o.id})}" method="post" class="d-flex gap-1">
+          <select name="status" class="form-select form-select-sm" style="width:140px">
+            <option value="PENDING"    th:selected="${o.status.name() == 'PENDING'}">Нове</option>
+            <option value="CONFIRMED"  th:selected="${o.status.name() == 'CONFIRMED'}">Підтверджено</option>
+            <option value="DELIVERING" th:selected="${o.status.name() == 'DELIVERING'}">В доставці</option>
+            <option value="DONE"       th:selected="${o.status.name() == 'DONE'}">Виконано</option>
+            <option value="CANCELLED"  th:selected="${o.status.name() == 'CANCELLED'}">Скасовано</option>
+          </select>
+          <button class="btn btn-sm btn-primary">✓</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
